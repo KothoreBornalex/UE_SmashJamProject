@@ -40,3 +40,14 @@ void AMatchGameMode::FindPlayerStartActorsInArena(TArray<AArenaPlayerStart*>& Re
 		ResultsActors.Add(ArenaPlayerStartActor);
 	}
 }
+
+// TSubclassOf<ASmashCharacter> AMatchGameMode::GetSmashCharacterClassFromInputType(
+// 	EAutoReceiveInput::Type InputType) const
+// {
+// 	switch(InputType)
+// 	{
+// 	case EAutoReceiveInput::Type::Player0:
+// 		return SmashCharacterClass;
+// 		
+// 	}
+// }

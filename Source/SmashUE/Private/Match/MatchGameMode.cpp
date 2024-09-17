@@ -21,7 +21,7 @@ void AMatchGameMode::BeginPlay()
 			-1,
 			5,
 			FColor::Red,
-			"Player Start"
+			PlayerStart->GetFName().ToString()
 		);
 	}
 }

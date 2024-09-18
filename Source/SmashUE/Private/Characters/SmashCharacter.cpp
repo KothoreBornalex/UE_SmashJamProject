@@ -3,6 +3,9 @@
 
 #include "Characters/SmashCharacter.h"
 
+#include "Characters/SmashCharacterStateMachine.h"
+#include "Characters/PDA/PDA_StateDatas.h"
+
 
 // Sets default values
 ASmashCharacter::ASmashCharacter()
@@ -15,14 +18,15 @@ ASmashCharacter::ASmashCharacter()
 void ASmashCharacter::BeginPlay()
 {
 	Super::BeginPlay();
-	
+	CreateStateMachine();
+	InitStateMachine();
 }
 
 // Called every frame
 void ASmashCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
+	TickStateMachine(DeltaTime);
 	RotateMeshUsingOrientX();
 }
 
@@ -49,5 +53,34 @@ void ASmashCharacter::RotateMeshUsingOrientX() const
 	Rotation.Yaw = -90.0f * OrientX;
 
 	GetMesh()->SetRelativeRotation(Rotation);
+}
+
+void ASmashCharacter::CreateStateMachine()
+{
+	StateMachine = NewObject<USmashCharacterStateMachine>(this);
+}
+
+void ASmashCharacter::InitStateMachine()
+{
+	if (StateMachine == nullptr) return;
+
+	StateMachine->Init(this);
+}
+
+void ASmashCharacter::TickStateMachine(float DeltaTime) const
+{
+	if(StateMachine == nullptr) return;
+	StateMachine->Tick(DeltaTime);
+}
+
+UPDA_StateDatas* ASmashCharacter::GetStateDatas(ESmashCharacterStateID StateID)
+{
+	if(StatesDatas.Contains(StateID))
+	{
+		return Cast<UPDA_StateDatas>(*StatesDatas.Find(StateID));
+	}else
+	{
+		return nullptr;
+	}
 }
 

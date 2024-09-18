@@ -3,8 +3,12 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "SmashCharacterStateID.h"
 #include "GameFramework/Character.h"
 #include "SmashCharacter.generated.h"
+
+class UPDA_StateDatas;
+class USmashCharacterStateMachine;
 
 UCLASS()
 class SMASHUE_API ASmashCharacter : public ACharacter
@@ -47,6 +51,28 @@ protected:
 
 	void RotateMeshUsingOrientX() const;
 
+	
+#pragma endregion
+
+
+#pragma region State Machine
+
+public:
+	void CreateStateMachine();
+
+	void InitStateMachine();
+
+	void TickStateMachine(float DeltaTime) const;
+
+protected:
+	UPROPERTY(BlueprintReadOnly)
+	TObjectPtr<USmashCharacterStateMachine> StateMachine;
+
+public:
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	TMap<ESmashCharacterStateID, TObjectPtr<UPDA_StateDatas>> StatesDatas;
+
+	UPDA_StateDatas* GetStateDatas(ESmashCharacterStateID StateID);
 	
 #pragma endregion
 };

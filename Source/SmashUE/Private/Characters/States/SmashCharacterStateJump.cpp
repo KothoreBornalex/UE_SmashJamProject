@@ -1,8 +1,7 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "Characters/States/SmashCharacterStateWalk.h"
-
+#include "Characters/States/SmashCharacterStateJump.h"
 #include "Characters/SmashCharacter.h"
 #include "Characters/SmashCharacterSettings.h"
 #include "Characters/SmashCharacterStateMachine.h"
@@ -10,7 +9,7 @@
 
 
 // Sets default values for this component's properties
-USmashCharacterStateWalk::USmashCharacterStateWalk()
+USmashCharacterStateJump::USmashCharacterStateJump()
 {
 	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
 	// off to improve performance if you don't need them.
@@ -20,12 +19,12 @@ USmashCharacterStateWalk::USmashCharacterStateWalk()
 }
 
 
-ESmashCharacterStateID USmashCharacterStateWalk::GetStateID()
+ESmashCharacterStateID USmashCharacterStateJump::GetStateID()
 {
 	return ESmashCharacterStateID::Walk;
 }
 
-void USmashCharacterStateWalk::StateEnter(ESmashCharacterStateID PreviousStateID)
+void USmashCharacterStateJump::StateEnter(ESmashCharacterStateID PreviousStateID)
 {
 	Super::StateEnter(PreviousStateID);
 
@@ -38,11 +37,11 @@ void USmashCharacterStateWalk::StateEnter(ESmashCharacterStateID PreviousStateID
 	// 	TEXT("Enter State Walk")
 	// );
 
-	Character->InputMoveXFastEvent.AddDynamic(this, &USmashCharacterStateWalk::OnInputMoveXFast);
+	Character->InputMoveXFastEvent.AddDynamic(this, &USmashCharacterStateJump::OnInputMoveXFast);
 
 }
 
-void USmashCharacterStateWalk::StateExit(ESmashCharacterStateID NextStateID)
+void USmashCharacterStateJump::StateExit(ESmashCharacterStateID NextStateID)
 {
 	Super::StateExit(NextStateID);
 
@@ -53,11 +52,11 @@ void USmashCharacterStateWalk::StateExit(ESmashCharacterStateID NextStateID)
 	// 	TEXT("Exit State Walk")
 	// );
 
-	Character->InputMoveXFastEvent.RemoveDynamic(this, &USmashCharacterStateWalk::OnInputMoveXFast);
+	Character->InputMoveXFastEvent.RemoveDynamic(this, &USmashCharacterStateJump::OnInputMoveXFast);
 
 }
 
-void USmashCharacterStateWalk::StateTick(float DeltaTime)
+void USmashCharacterStateJump::StateTick(float DeltaTime)
 {
 	Super::StateTick(DeltaTime);
 
@@ -79,7 +78,7 @@ void USmashCharacterStateWalk::StateTick(float DeltaTime)
 }
 
 
-void USmashCharacterStateWalk::OnInputMoveXFast(float InputMoveX)
+void USmashCharacterStateJump::OnInputMoveXFast(float InputMoveX)
 {
 	StateMachine->ChangeState(ESmashCharacterStateID::Run);
 }

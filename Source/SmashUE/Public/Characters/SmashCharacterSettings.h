@@ -4,6 +4,8 @@
 
 #include "CoreMinimal.h"
 #include "Engine/DeveloperSettings.h"
+#include "InputMappingContext.h"
+
 #include "SmashCharacterSettings.generated.h"
 
 class USmashCharacterInputData;

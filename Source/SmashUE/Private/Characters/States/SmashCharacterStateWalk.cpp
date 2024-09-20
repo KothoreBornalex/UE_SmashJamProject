@@ -4,6 +4,7 @@
 #include "Characters/States/SmashCharacterStateWalk.h"
 
 #include "Characters/SmashCharacter.h"
+#include "Characters/SmashCharacterStateMachine.h"
 #include "Characters/PDA/PDA_StateDatas.h"
 
 
@@ -60,6 +61,12 @@ void USmashCharacterStateWalk::StateTick(float DeltaTime)
 		TEXT("Tick State Walk")
 	);
 
-	FVector ForwardVector = Character->GetActorForwardVector();
-	Character->AddMovementInput(ForwardVector * Character->GetStateDatas(GetStateID())->StateSpeed * DeltaTime);
+	if(FMath::Abs(Character->GetInputMoveX()) < 0.1f)
+	{
+		StateMachine->ChangeState(ESmashCharacterStateID::Idle);
+	}else
+	{
+		Character->SetOrientX(Character->GetInputMoveX());
+		Character->AddMovementInput(FVector::ForwardVector, Character->GetOrientX() * Character->GetStateDatas(GetStateID())->StateSpeed * DeltaTime);
+	}
 }

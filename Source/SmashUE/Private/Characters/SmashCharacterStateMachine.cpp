@@ -2,6 +2,7 @@
 
 
 #include "Characters/SmashCharacterStateMachine.h"
+#include "InputMappingContext.h"
 
 #include "Characters/SmashCharacter.h"
 #include "Characters/SmashCharacterState.h"

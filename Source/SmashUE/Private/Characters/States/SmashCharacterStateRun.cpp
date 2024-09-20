@@ -4,6 +4,8 @@
 #include "Characters/States/SmashCharacterStateRun.h"
 
 #include "Characters/SmashCharacter.h"
+#include "Characters/SmashCharacterSettings.h"
+#include "Characters/SmashCharacterStateMachine.h"
 #include "Characters/PDA/PDA_StateDatas.h"
 
 
@@ -41,25 +43,31 @@ void USmashCharacterStateRun::StateExit(ESmashCharacterStateID NextStateID)
 {
 	Super::StateExit(NextStateID);
 
-	GEngine->AddOnScreenDebugMessage(
-		-1,
-		3.0f,
-		FColor::Red,
-		TEXT("Exit State Run")
-	);
+	// GEngine->AddOnScreenDebugMessage(
+	// 	-1,
+	// 	3.0f,
+	// 	FColor::Red,
+	// 	TEXT("Exit State Run")
+	// );
 }
 
 void USmashCharacterStateRun::StateTick(float DeltaTime)
 {
 	Super::StateTick(DeltaTime);
 
-	GEngine->AddOnScreenDebugMessage(
-		-1,
-		0.1f,
-		FColor::Green,
-		TEXT("Tick State Run")
-	);
+	// GEngine->AddOnScreenDebugMessage(
+	// 	-1,
+	// 	0.1f,
+	// 	FColor::Green,
+	// 	TEXT("Tick State Run")
+	// );
 
-	FVector ForwardVector = Character->GetActorForwardVector();
-	Character->AddMovementInput(ForwardVector * Character->GetStateDatas(GetStateID())->StateSpeed * DeltaTime);
+	if(FMath::Abs(Character->GetInputMoveX()) < CharacterSettings->InputMoveXThreshold)
+	{
+		StateMachine->ChangeState(ESmashCharacterStateID::Idle);
+	}else
+	{
+		Character->SetOrientX(Character->GetInputMoveX());
+		Character->AddMovementInput(FVector::ForwardVector, Character->GetOrientX() * Character->GetStateDatas(GetStateID())->StateSpeed * DeltaTime);
+	}
 }

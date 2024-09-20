@@ -14,6 +14,9 @@ class USmashCharacterStateMachine;
 struct FInputActionValue;
 class UEnhancedInputComponent;
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FInputMoveXEvent, float, InputMoveX);
+
+
 UCLASS()
 class SMASHUE_API ASmashCharacter : public ACharacter
 {
@@ -99,9 +102,11 @@ public:
 
 
 public:
-
 	float GetInputMoveX();
-
+	
+	UPROPERTY()
+	FInputMoveXEvent InputMoveXFastEvent;
+	
 protected:
 	UPROPERTY()
 	float InputMoveX = 0.0f;
@@ -110,6 +115,7 @@ private:
 	void BindInputMoveXAxisAndActions(UEnhancedInputComponent* EnhancedInputComponent);
 
 	void OnInputMoveX(const FInputActionValue& InputActionValue);
+	void OnInputMoveXFast(const FInputActionValue& InputActionValue);
 
 
 #pragma endregion

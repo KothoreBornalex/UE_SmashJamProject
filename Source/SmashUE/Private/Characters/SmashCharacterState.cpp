@@ -2,7 +2,7 @@
 
 
 #include "Characters/SmashCharacterState.h"
-
+#include "Characters/SmashCharacterSettings.h"
 #include "Characters/SmashCharacterStateID.h"
 #include "Characters/SmashCharacterStateMachine.h"
 
@@ -26,6 +26,8 @@ void USmashCharacterState::StateInit(USmashCharacterStateMachine* InStateMachine
 {
 	StateMachine = InStateMachine;
 	Character = InStateMachine->GetSmashCharacter();
+	CharacterSettings = GetDefault<USmashCharacterSettings>();
+
 	GEngine->AddOnScreenDebugMessage(
 		-1,
 		3.0f,

@@ -5,7 +5,10 @@
 
 #include "Arena/ArenaPlayerStart.h"
 #include "Characters/SmashCharacter.h"
+#include "Characters/SmashCharacterSettings.h"
 #include "Kismet/GameplayStatics.h"
+#include "InputMappingContext.h"
+#include "Characters/Datas/SmashCharacterInputData.h"  // Adjust according to your folder structure
 
 void AMatchGameMode::BeginPlay()
 {
@@ -16,23 +19,6 @@ void AMatchGameMode::BeginPlay()
 	FindPlayerStartActorsInArena(PlayerStartPoints);
 	SpawnCharacters(PlayerStartPoints);
 
-	
-	// for (AArenaPlayerStart* PlayerStart : PlayerStartPoints)
-	// {
-	//
-	// 	EAutoReceiveInput::Type InputType = PlayerStart->AutoReceiveInput.GetValue();
-	// 	TSubclassOf<ASmashCharacter> SmashCharacterClass = GetSmashCharacterClassFromInputType(InputType);
-	//
-	// 	if(SmashCharacterClass == nullptr) continue;
-	// 	
-	// 	GEngine->AddOnScreenDebugMessage
-	// 	(
-	// 		-1,
-	// 		5,
-	// 		FColor::Red,
-	// 		PlayerStart->GetFName().ToString()
-	// 	);
-	// }
 }
 
 void AMatchGameMode::FindPlayerStartActorsInArena(TArray<AArenaPlayerStart*>& ResultsActors)
@@ -52,6 +38,9 @@ void AMatchGameMode::FindPlayerStartActorsInArena(TArray<AArenaPlayerStart*>& Re
 
 void AMatchGameMode::SpawnCharacters(const TArray<AArenaPlayerStart*>& SpawnPoints)
 {
+	USmashCharacterInputData* InputData = LoadInputDataFromConfig();
+	UInputMappingContext* MappingContext = LoadInputMappingContextFromConfig();
+	
 	for (AArenaPlayerStart* SpawnPoint : SpawnPoints)
 	{
 		EAutoReceiveInput::Type InputType = SpawnPoint->AutoReceiveInput.GetValue();
@@ -67,6 +56,8 @@ void AMatchGameMode::SpawnCharacters(const TArray<AArenaPlayerStart*>& SpawnPoin
 
 		if(NewCharacter == nullptr) continue;
 
+		NewCharacter->InputData = InputData;
+		NewCharacter->InputMappingContext = MappingContext;
 		NewCharacter->AutoPossessPlayer = SpawnPoint->AutoReceiveInput;
 		NewCharacter->SetOrientX(SpawnPoint->GetStartOrientX());
 		NewCharacter->FinishSpawning(SpawnPoint->GetTransform());
@@ -96,4 +87,22 @@ TSubclassOf<ASmashCharacter> AMatchGameMode::GetSmashCharacterClassFromInputType
 		default:
 			return nullptr;
 	}
+}
+
+USmashCharacterInputData* AMatchGameMode::LoadInputDataFromConfig()
+{
+	const USmashCharacterSettings* CharacterSettings = GetDefault<USmashCharacterSettings>();
+
+	if(!CharacterSettings) return nullptr;
+
+	return CharacterSettings->InputData.LoadSynchronous();
+}
+
+UInputMappingContext* AMatchGameMode::LoadInputMappingContextFromConfig()
+{
+	const USmashCharacterSettings* CharacterSettings = GetDefault<USmashCharacterSettings>();
+
+	if(!CharacterSettings) return nullptr;
+
+	return CharacterSettings->InputMappingContext.LoadSynchronous();
 }

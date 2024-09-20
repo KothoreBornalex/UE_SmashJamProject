@@ -3,8 +3,25 @@
 
 #include "Characters/SmashCharacter.h"
 
+#include "EnhancedInputSubsystems.h"
 #include "Characters/SmashCharacterStateMachine.h"
 #include "Characters/PDA/PDA_StateDatas.h"
+
+
+void ASmashCharacter::SetUpInputMappingContext() const
+{
+	APlayerController* PlayerController = Cast<APlayerController>(Controller);
+	if(!PlayerController) return;
+
+	ULocalPlayer* Player = PlayerController->GetLocalPlayer();
+	if(!Player) return;
+
+	UEnhancedInputLocalPlayerSubsystem* InputSystem = Player->GetSubsystem<UEnhancedInputLocalPlayerSubsystem>();
+	if(!InputSystem) return;
+
+	InputSystem->AddMappingContext(InputMappingContext, 0);
+}
+
 
 
 // Sets default values
@@ -34,6 +51,8 @@ void ASmashCharacter::Tick(float DeltaTime)
 void ASmashCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
+
+	SetUpInputMappingContext();
 }
 
 float ASmashCharacter::GetOrientX() const

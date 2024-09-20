@@ -7,6 +7,8 @@
 #include "GameFramework/Character.h"
 #include "SmashCharacter.generated.h"
 
+class UInputMappingContext;
+class USmashCharacterInputData;
 class UPDA_StateDatas;
 class USmashCharacterStateMachine;
 
@@ -15,7 +17,20 @@ class SMASHUE_API ASmashCharacter : public ACharacter
 {
 	GENERATED_BODY()
 
+#pragma region Input Data / Mapping Context
+	
+public:
+	UPROPERTY()
+	TObjectPtr<UInputMappingContext> InputMappingContext;
 
+	UPROPERTY()
+	TObjectPtr<USmashCharacterInputData> InputData;
+
+protected:
+	void SetUpInputMappingContext() const;
+	
+#pragma endregion
+	
 #pragma region Unreal Default
 	
 public:

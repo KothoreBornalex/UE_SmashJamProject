@@ -8,6 +8,7 @@
 
 class USmashCharacterInputData;
 class UInputMappingContext;
+
 /**
  * 
  */

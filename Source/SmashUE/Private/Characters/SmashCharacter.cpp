@@ -9,6 +9,7 @@
 #include "Characters/SmashCharacterStateMachine.h"
 #include "Characters/Datas/SmashCharacterInputData.h"
 #include "Characters/PDA/PDA_StateDatas.h"
+#include "Kismet/GameplayStatics.h"
 
 
 void ASmashCharacter::SetUpInputMappingContext() const
@@ -117,6 +118,11 @@ float ASmashCharacter::GetInputMoveX()
 	return InputMoveX;
 }
 
+float ASmashCharacter::GetInputMoveZ()
+{
+	return InputMoveZ;
+}
+
 void ASmashCharacter::BindInputMoveXAxisAndActions(UEnhancedInputComponent* EnhancedInputComponent)
 {
 	if(!InputData) return;
@@ -154,6 +160,17 @@ void ASmashCharacter::BindInputMoveXAxisAndActions(UEnhancedInputComponent* Enha
 			&ASmashCharacter::OnInputMoveXFast
 		);
 	}
+
+
+	if(InputData->InputActionMoveZ)
+	{
+		EnhancedInputComponent->BindAction(
+			InputData->InputActionMoveZ,
+			ETriggerEvent::Triggered,
+			this,
+			&ASmashCharacter::OnInputMoveZ
+		);
+	}
 }
 
 void ASmashCharacter::OnInputMoveX(const FInputActionValue& InputActionValue)
@@ -165,5 +182,10 @@ void ASmashCharacter::OnInputMoveXFast(const FInputActionValue& InputActionValue
 {
 	InputMoveX = InputActionValue.Get<float>();
 	InputMoveXFastEvent.Broadcast(InputMoveX);
+}
+
+void ASmashCharacter::OnInputMoveZ(const FInputActionValue& InputActionValue)
+{
+	InputMoveZ = InputActionValue.Get<float>();
 }
 

@@ -53,6 +53,8 @@ void USmashCharacterStateIdle::StateExit(ESmashCharacterStateID NextStateID)
 	// );
 
 	Character->InputMoveXFastEvent.RemoveDynamic(this, &USmashCharacterStateIdle::OnInputMoveXFast);
+	Character->InputMoveXFastEvent.RemoveDynamic(this, &USmashCharacterStateIdle::OnInputMoveXFast);
+
 }
 
 void USmashCharacterStateIdle::StateTick(float DeltaTime)
@@ -60,17 +62,22 @@ void USmashCharacterStateIdle::StateTick(float DeltaTime)
 	Super::StateTick(DeltaTime);
 
 
-	// GEngine->AddOnScreenDebugMessage(
-	// 	-1,
-	// 	0.1f,
-	// 	FColor::Green,
-	// 	TEXT("Tick State Idle")
-	// );
+	GEngine->AddOnScreenDebugMessage(
+		-1,
+		0.1f,
+		FColor::Green,
+		TEXT("Tick State Idle")
+	);
 
 
 	if(FMath::Abs(Character->GetInputMoveX()) > CharacterSettings->InputMoveXThreshold)
 	{
 		StateMachine->ChangeState(ESmashCharacterStateID::Walk);
+	}
+
+	if(FMath::Abs(Character->GetInputMoveZ()) > 0)
+	{
+		StateMachine->ChangeState(ESmashCharacterStateID::Jump);
 	}
 }
 

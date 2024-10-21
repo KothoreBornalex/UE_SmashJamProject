@@ -43,24 +43,24 @@ void USmashCharacterStateRun::StateExit(ESmashCharacterStateID NextStateID)
 {
 	Super::StateExit(NextStateID);
 
-	// GEngine->AddOnScreenDebugMessage(
-	// 	-1,
-	// 	3.0f,
-	// 	FColor::Red,
-	// 	TEXT("Exit State Run")
-	// );
+	 GEngine->AddOnScreenDebugMessage(
+	 	-1,
+	 	3.0f,
+	 	FColor::Red,
+	 	TEXT("Exit State Run")
+	 );
 }
 
 void USmashCharacterStateRun::StateTick(float DeltaTime)
 {
 	Super::StateTick(DeltaTime);
 
-	// GEngine->AddOnScreenDebugMessage(
-	// 	-1,
-	// 	0.1f,
-	// 	FColor::Green,
-	// 	TEXT("Tick State Run")
-	// );
+	GEngine->AddOnScreenDebugMessage(
+		-1,
+		0.1f,
+		FColor::Green,
+		TEXT("Tick State Run")
+	);
 
 	if(FMath::Abs(Character->GetInputMoveX()) < CharacterSettings->InputMoveXThreshold)
 	{

@@ -28,29 +28,33 @@ void USmashCharacterStateJump::StateEnter(ESmashCharacterStateID PreviousStateID
 {
 	Super::StateEnter(PreviousStateID);
 
-	Character->PlayAnimMontage(Character->GetStateDatas(GetStateID())->AnimMontage);
+	TObjectPtr<UAnimMontage> AnimMontage;
+	AnimMontage = Character->GetStateDatas(GetStateID())->AnimMontage;
+	if(AnimMontage)
+	{
+		Character->PlayAnimMontage(AnimMontage);
+	}
 	
-	// GEngine->AddOnScreenDebugMessage(
-	// 	-1,
-	// 	3.0f,
-	// 	FColor::Cyan,
-	// 	TEXT("Enter State Walk")
-	// );
+	 GEngine->AddOnScreenDebugMessage(
+	 	-1,
+	 	3.0f,
+	 	FColor::Cyan,
+	 	TEXT("Enter State Jump")
+	 );
 
-	Character->InputMoveXFastEvent.AddDynamic(this, &USmashCharacterStateJump::OnInputMoveXFast);
-
+	Character->Jump();
 }
 
 void USmashCharacterStateJump::StateExit(ESmashCharacterStateID NextStateID)
 {
 	Super::StateExit(NextStateID);
 
-	// GEngine->AddOnScreenDebugMessage(
-	// 	-1,
-	// 	3.0f,
-	// 	FColor::Red,
-	// 	TEXT("Exit State Walk")
-	// );
+	 GEngine->AddOnScreenDebugMessage(
+	 	-1,
+	 	3.0f,
+	 	FColor::Red,
+	 	TEXT("Exit State Jump")
+	 );
 
 	Character->InputMoveXFastEvent.RemoveDynamic(this, &USmashCharacterStateJump::OnInputMoveXFast);
 
@@ -64,17 +68,9 @@ void USmashCharacterStateJump::StateTick(float DeltaTime)
 	// 	-1,
 	// 	0.1f,
 	// 	FColor::Green,
-	// 	TEXT("Tick State Walk")
+	// 	TEXT("Tick State Jump")
 	// );
 	
-	if(FMath::Abs(Character->GetInputMoveX()) < CharacterSettings->InputMoveXThreshold)
-	{
-		StateMachine->ChangeState(ESmashCharacterStateID::Idle);
-	}else
-	{
-		Character->SetOrientX(Character->GetInputMoveX());
-		Character->AddMovementInput(FVector::ForwardVector, Character->GetOrientX() * Character->GetStateDatas(GetStateID())->GetFloatVariable("MoveSpeed") * DeltaTime);
-	}
 }
 
 

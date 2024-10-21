@@ -103,7 +103,8 @@ public:
 
 public:
 	float GetInputMoveX();
-	
+	float GetInputMoveZ();
+
 	UPROPERTY()
 	FInputMoveXEvent InputMoveXFastEvent;
 	
@@ -111,11 +112,15 @@ protected:
 	UPROPERTY()
 	float InputMoveX = 0.0f;
 
+	UPROPERTY()
+	float InputMoveZ = 0.0f;
+
 private:
 	void BindInputMoveXAxisAndActions(UEnhancedInputComponent* EnhancedInputComponent);
 
 	void OnInputMoveX(const FInputActionValue& InputActionValue);
 	void OnInputMoveXFast(const FInputActionValue& InputActionValue);
+	void OnInputMoveZ(const FInputActionValue& InputActionValue);
 
 
 #pragma endregion

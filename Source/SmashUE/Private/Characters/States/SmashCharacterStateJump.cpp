@@ -21,7 +21,7 @@ USmashCharacterStateJump::USmashCharacterStateJump()
 
 ESmashCharacterStateID USmashCharacterStateJump::GetStateID()
 {
-	return ESmashCharacterStateID::Walk;
+	return ESmashCharacterStateID::Jump;
 }
 
 void USmashCharacterStateJump::StateEnter(ESmashCharacterStateID PreviousStateID)
@@ -29,7 +29,8 @@ void USmashCharacterStateJump::StateEnter(ESmashCharacterStateID PreviousStateID
 	Super::StateEnter(PreviousStateID);
 
 	TObjectPtr<UAnimMontage> AnimMontage;
-	AnimMontage = Character->GetStateDatas(GetStateID())->AnimMontage;
+    AnimMontage = Character->GetStateDatas(GetStateID())->AnimMontage;
+	
 	if(AnimMontage)
 	{
 		Character->PlayAnimMontage(AnimMontage);
@@ -57,7 +58,6 @@ void USmashCharacterStateJump::StateExit(ESmashCharacterStateID NextStateID)
 	 );
 
 	Character->InputMoveXFastEvent.RemoveDynamic(this, &USmashCharacterStateJump::OnInputMoveXFast);
-
 }
 
 void USmashCharacterStateJump::StateTick(float DeltaTime)
